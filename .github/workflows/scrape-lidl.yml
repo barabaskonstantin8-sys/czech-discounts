@@ -1,9 +1,12 @@
 name: Scrape Lidl and update offers
 
 on:
-  workflow_dispatch:   # вручную из Actions
+  workflow_dispatch:       # запуск вручную
   schedule:
-    - cron: "0 */6 * * *"   # каждые 6 часов
+    - cron: "0 */6 * * *"  # каждые 6 часов
+
+permissions:
+  contents: write
 
 jobs:
   scrape:
@@ -11,26 +14,31 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Install Playwright browsers
+      - name: Install Playwright browsers (with deps)
         run: npx playwright install --with-deps
 
       - name: Run Lidl scraper
-        run: npx ts-node scripts/scrape_lidl.ts
+        run: npm run scrape:lidl
 
       - name: Commit and push updated offers.json
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git add public/data/offers.json
-          git commit -m "chore: update Lidl offers [skip ci]" || echo "No changes to commit"
-          git push
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          if git status --porcelain public/data/offers.json | grep -q "public/data/offers.json"; then
+            git add public/data/offers.json
+            git commit -m "chore: update Lidl offers [skip ci]"
+            git push
+          else
+            echo "No changes in offers.json"
+          fi
