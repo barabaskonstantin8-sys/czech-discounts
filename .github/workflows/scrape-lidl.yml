@@ -1,9 +1,9 @@
 name: Scrape Lidl and update offers
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:          # запуск вручную из Actions
   schedule:
-    - cron: "0 */6 * * *" # каждые 6 часов (UTC)
+    - cron: "0 */6 * * *"     # каждые 6 часов (UTC)
 
 jobs:
   scrape:
@@ -24,13 +24,13 @@ jobs:
       - name: Install Playwright browsers (with deps)
         run: npx playwright install --with-deps
 
-      # <<< новый шаг для отладки
+      # Для отладки: покажем, что лежит в package.json
       - name: Show package.json
         run: cat package.json
 
-      # <<< ПРОМЫСЛЕННЫЙ ЗАПУСК СКРИПТА, БЕЗ npm run
-      - name: Run Lidl scraper
-        run: npx ts-node scripts/scrape_lidl.ts
+      # КЛЮЧЕВОЕ: запускаем скрипт НАПРЯМУЮ, без "npm run"
+      - name: Run Lidl scraper directly
+        run: npx ts-node --transpile-only scripts/scrape_lidl.ts
 
       - name: Commit and push updated offers.json
         run: |
