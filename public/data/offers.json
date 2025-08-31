@@ -1,0 +1,28 @@
+[
+  {
+    "id": "albert-001",
+    "chain": "Albert",
+    "title": "Máslo 82% 250g",
+    "price": 39.90,
+    "oldPrice": 59.90,
+    "discount": 33,
+    "validFrom": "2025-08-29",
+    "validTo": "2025-09-04",
+    "cities": ["Praha", "Brno", "Hradec Králové"],
+    "labels": ["maslo", "máslo", "butter", "dairy"],
+    "url": "https://www.albert.cz/letak"
+  },
+  {
+    "id": "lidl-001",
+    "chain": "Lidl",
+    "title": "Pivo světlé 0.5l",
+    "price": 9.90,
+    "oldPrice": 15.90,
+    "discount": 38,
+    "validFrom": "2025-08-29",
+    "validTo": "2025-09-04",
+    "cities": ["Praha", "Liberec"],
+    "labels": ["pivo", "beer"],
+    "url": "https://www.lidl.cz/letak"
+  }
+]
